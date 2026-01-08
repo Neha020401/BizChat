@@ -16,4 +16,24 @@ public class User {
 
     @Indexed(unique = true)
     private String email;
+    private String password;
+    private String role; // Roles are Buyer(ArtLover), Seller(TheArtisit), and Both
+    private Profile profile;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @Data
+    public static class Profile{
+        private String name;
+        private String avatar;
+        private String bio;
+        private String phone;
+    }
+
+    public User(){
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+
 }
