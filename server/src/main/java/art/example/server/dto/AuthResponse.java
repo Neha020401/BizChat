@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 public class AuthResponse {
 
     private  String token;
@@ -24,3 +24,5 @@ this.email = email;
 this.role = role;
     }
 }
+
+
