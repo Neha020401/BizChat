@@ -60,5 +60,4 @@ System.out.print("Invalid JWT token: " + e.getMessage());
         return  false;
     }
 
-
 }
