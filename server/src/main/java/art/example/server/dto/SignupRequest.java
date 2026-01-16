@@ -9,7 +9,7 @@ import lombok.Data;
 public class SignupRequest {
 
     @NotBlank(message = "Name is required")
-    @Size(min = 2,max = 50, message = "Name should be longfer than 2 and shorter the 50")
+    @Size(min = 2,max = 50, message = "Name should be longer than 2 and shorter the 50")
     private String name ;
 
     @NotBlank(message = "Email is required")
