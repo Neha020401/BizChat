@@ -1,0 +1,5 @@
+spring.application.name=server
+server.port = 8080
+spring.data.mongodb.uri=mongodb+srv://yourname:port@clustername.mongodb.net/?appName=clustername
+jwt.secret=yourJwtSecret
+jwt.expiration=8640000
