@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -51,6 +52,29 @@ public class ProductService {
         return mapToResponse(savedProduct, seller);
     }
 
+    public List getAllActiveProduct(){
+        List products = productRepository.findByStatus("ACTIVE");
+        return products.stream()
+                .map(this::mapToResponseWithSeller)
+                .collect(Collectors.toList());
+    }
+
+
+
+    public ProductResponse getProductById(String id){
+Product product = productRepository.findById(id)
+        .orElseThrow(()-> new RuntimeException("Product not found "));
+return  mapToResponseWithSeller(product);
+    }
+
+
+    public List getProductBySeller(String sellerId){
+        List products = productRepository.findBySeller(sellerId);
+        return products.stream()
+                .map(this::mapToResponseWithSeller)
+                .collect(Collectors.toList());
+    }
+
     private ProductResponse mapToResponse(Product product, User seller) {
         ProductResponse response  = new ProductResponse();
         response.setId(product.getId());
@@ -73,6 +97,11 @@ public class ProductService {
             response.setDimensions(dims);
         }
         return response;
+    }
+
+    private ProductResponse mapToResponseWithSeller(Product product) {
+        User seller = userRepository.findById(product.getSellerId()).orElse(null);
+        return mapToResponse(product, seller);
     }
 
     private void validateCategory(String category) {
