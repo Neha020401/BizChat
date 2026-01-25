@@ -27,11 +27,12 @@ public class ProductService {
                 orElseThrow(()->new RuntimeException("Seller not found"));
 
         if(!seller.getRole().equals("SELLER") && ! seller.getRole().equals("BOTH")){
-            new RuntimeException("User is not authorized to sell products ");
+            throw  new RuntimeException("User is not authorized to sell products ");
         }
         validateCategory(request.getCategory());
 
         Product product = new Product();
+        product.setTitle(request.getTitle());
         product.setSellerId(sellerId);
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
@@ -53,7 +54,7 @@ public class ProductService {
     }
 
     public List getAllActiveProduct(){
-        List products = productRepository.findByStatus("ACTIVE");
+        List<String> products = productRepository.findByStatus("ACTIVE");
         return products.stream()
                 .map(this::mapToResponseWithSeller)
                 .collect(Collectors.toList());
@@ -69,7 +70,7 @@ return  mapToResponseWithSeller(product);
 
 
     public List getProductBySeller(String sellerId){
-        List products = productRepository.findBySeller(sellerId);
+        List products = productRepository.findBySellerId(sellerId);
         return products.stream()
                 .map(this::mapToResponseWithSeller)
                 .collect(Collectors.toList());
@@ -105,7 +106,7 @@ return  mapToResponseWithSeller(product);
     }
 
     private void validateCategory(String category) {
-        List validCategories  = List.of("PAINTING","SCULPTURE","DIGITAL","PHOTOGRAPY","OTHER");
+        List<String> validCategories  = List.of("PAINTING","SCULPTURE","DIGITAL","PHOTOGRAPHY","OTHER");
         if(!validCategories.contains(category)){
             throw new RuntimeException("Invalid category. Must be one of: " + validCategories);
         }

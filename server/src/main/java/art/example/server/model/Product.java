@@ -13,10 +13,10 @@ import java.util.List;
 public class Product {
 
     @Id
-    private String Id;
+    private String id;
 
     @Indexed
-    private String SellerId;
+    private String sellerId;
 
     private String description;
 
@@ -24,7 +24,7 @@ public class Product {
 
     private String category; // "PAINTING", "SCULPTURE", "DIGITAL", "PHOTOGRAPHY", "OTHER"
 
-    private List images  = new ArrayList<>(); // URLs or Base64 strings
+    private List<String> images  = new ArrayList<>(); // URLs or Base64 strings
 
     private Integer stock ;
 
@@ -32,7 +32,7 @@ public class Product {
 
     private String status; // "ACTIVE", "SOLD", "DRAFT"
 
-    private List tag = new ArrayList<>(); // ["abstract", "modern", "colorful"]
+    private List<String> tag = new ArrayList<>(); // ["abstract", "modern", "colorful"]
 
     private Dimensions  dimensions;
 
@@ -54,7 +54,5 @@ public class Product {
         this.stock = 1;
 
     }
-
-
 
 }

@@ -24,7 +24,7 @@ public class ProductRequest {
     @NotBlank(message = "Category is required")
     private String category;
 
-    private List images = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
 
     @NotNull(message = "Stock is required")
     @Positive(message = "Stock must be positive")
@@ -32,7 +32,7 @@ public class ProductRequest {
 
     private String status = "Active";
 
-    private List tag = new ArrayList<>();
+    private List<String> tag = new ArrayList<>();
 
     private DimensionsDTO dimensions;
 

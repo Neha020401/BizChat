@@ -20,10 +20,10 @@ public class ProductResponse {
     private String description;
     private Double price ;
     private String category;
-    private List images ;
+    private List<String> images ;
     private Integer stock;
     private String status;
-    private List tag;
+    private List<String> tag;
     private DimensionsDTO dimensions ;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
