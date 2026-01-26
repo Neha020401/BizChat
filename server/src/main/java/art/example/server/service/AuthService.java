@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
+
 @Service
 public class AuthService {
 
@@ -29,7 +31,7 @@ public class AuthService {
         if (!request.getRole().equals("BUYER") &&
                 !request.getRole().equals("SELLER") &&
                 !request.getRole().equals("BOTH")) {
-            throw new RuntimeException("Invalid Role, The role must be Buyer, Seller, or Both");
+            throw new RuntimeException("Invalid Role, The role must be BUYER,SELLER, or BOTH");
         }
         User user = new User();
         user.setEmail(request.getEmail());
@@ -46,7 +48,7 @@ public class AuthService {
         User savedUser = userRepository.save(user);
 
         String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
-
+        System.out.println(request);
         return new AuthResponse(
                 token,
                 savedUser.getId(),

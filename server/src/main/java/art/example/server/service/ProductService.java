@@ -53,8 +53,8 @@ public class ProductService {
         return mapToResponse(savedProduct, seller);
     }
 
-    public List getAllActiveProduct(){
-        List<String> products = productRepository.findByStatus("ACTIVE");
+    public List<ProductResponse> getAllActiveProduct(){
+        List<Product> products = productRepository.findByStatus("ACTIVE");
         return products.stream()
                 .map(this::mapToResponseWithSeller)
                 .collect(Collectors.toList());
@@ -69,11 +69,32 @@ return  mapToResponseWithSeller(product);
     }
 
 
-    public List getProductBySeller(String sellerId){
-        List products = productRepository.findBySellerId(sellerId);
+    public List<ProductResponse> getProductBySeller(String sellerId){
+        List<Product> products = productRepository.findBySellerId(sellerId);
         return products.stream()
                 .map(this::mapToResponseWithSeller)
                 .collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> getProductByCategory(String category){
+        List<Product> product = productRepository.findByCategoryAndStatus(category,"ACTIVE");
+        return product.stream()
+                .map(this::mapToResponseWithSeller)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> searchProduct(String keyword){
+        List<Product> product = productRepository.searchByTitle(keyword);
+        return product.stream()
+                .map(this::mapToResponseWithSeller)
+                .collect(Collectors.toList());
+    }
+
+    private void validateCategory(String category) {
+        List<String> validCategories  = List.of("PAINTING","SCULPTURE","DIGITAL","PHOTOGRAPHY","OTHER");
+        if(!validCategories.contains(category)){
+            throw new RuntimeException("Invalid category. Must be one of: " + validCategories);
+        }
     }
 
     private ProductResponse mapToResponse(Product product, User seller) {
@@ -89,9 +110,12 @@ return  mapToResponseWithSeller(product);
         response.setStock(product.getStock());
         response.setStatus(product.getStatus());
         response.setTag(product.getTag());
+        response.setCreatedAt(product.getCreatedAt());
+        response.setUpdatedAt(product.getUpdatedAt());
+
 
         if(product.getDimensions() != null){
-                ProductResponse.DimensionsDTO dims = new ProductResponse.DimensionsDTO();
+            ProductResponse.DimensionsDTO dims = new ProductResponse.DimensionsDTO();
             dims.setWidth(product.getDimensions().getWidth());
             dims.setHeight(product.getDimensions().getHeight());
             dims.setUnit(product.getDimensions().getUnit());
@@ -105,10 +129,5 @@ return  mapToResponseWithSeller(product);
         return mapToResponse(product, seller);
     }
 
-    private void validateCategory(String category) {
-        List<String> validCategories  = List.of("PAINTING","SCULPTURE","DIGITAL","PHOTOGRAPHY","OTHER");
-        if(!validCategories.contains(category)){
-            throw new RuntimeException("Invalid category. Must be one of: " + validCategories);
-        }
-    }
+
 }

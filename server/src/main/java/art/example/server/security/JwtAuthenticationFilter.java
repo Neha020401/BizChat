@@ -27,6 +27,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                   ) throws ServletException, IOException {
 
 try{
+
+    String path = request.getServletPath();
+
+    if (path.startsWith("/whoAreWe/StupidCreature")) {
+        filterChain.doFilter(request, response);
+        return;
+    }
+
     String jwt = getJwtFromRequest(request);
 
     //Validate token

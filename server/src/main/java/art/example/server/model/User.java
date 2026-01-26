@@ -16,6 +16,7 @@ public class User {
 
     @Indexed(unique = true)
     private String email;
+
     private String password;
     private String role; // Roles are Buyer(ArtLover), Seller(TheArtisit), and Both
     private Profile profile;

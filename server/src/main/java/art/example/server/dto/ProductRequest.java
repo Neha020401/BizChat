@@ -30,7 +30,7 @@ public class ProductRequest {
     @Positive(message = "Stock must be positive")
     private Integer stock;
 
-    private String status = "Active";
+    private String status = "ACTIVE";
 
     private List<String> tag = new ArrayList<>();
 
