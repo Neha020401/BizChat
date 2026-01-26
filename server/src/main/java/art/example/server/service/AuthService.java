@@ -45,7 +45,10 @@ public class AuthService {
 
         user.setProfile(profile);
 
+        System.out.println("Before save - User: " + user);
         User savedUser = userRepository.save(user);
+        System.out.println("After save - User ID: " + savedUser.getId());
+        System.out.println("After save - Full User: " + savedUser);
 
         String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
         System.out.println(request);
