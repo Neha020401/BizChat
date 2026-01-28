@@ -12,12 +12,12 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
 
     Boolean existsByEmail(String email);
-    String deleteByName(String name);
+//    String deleteByName(String name);
 
 
 //    List<User> findByRole(String role);
 
-    List<User> findByProfileName(String name);
+//    List<User> findByProfileName(String name);
 
 //    Optional<User> findByEmailAndRole(String email, String role);
 }
