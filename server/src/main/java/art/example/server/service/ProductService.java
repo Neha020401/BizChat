@@ -134,6 +134,16 @@ return  mapToResponseWithSeller(product);
 
     }
 
+    public void deleteProduct(String productId, String userId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new RuntimeException("Product not found"));
+
+        if(!product.getSellerId().equals(userId)){
+            throw new RuntimeException("You are not authorzied to delete this product");
+        }
+
+        productRepository.delete(product);
+    }
 
     private void validateCategory(String category) {
         List<String> validCategories  = List.of("PAINTING","SCULPTURE","DIGITAL","PHOTOGRAPHY","OTHER");
