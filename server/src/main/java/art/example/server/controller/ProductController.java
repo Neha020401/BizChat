@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
@@ -18,9 +20,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity createProduct(
-            @Valid @RequestBody ProductRequest request,
-            Authentication authentication ){
+    public ResponseEntity createProduct(@Valid @RequestBody ProductRequest request, Authentication authentication ){
         try{
             String sellerId =  (String)  authentication.getPrincipal();
             ProductResponse response = productService.createProduct(request,sellerId);
@@ -30,4 +30,41 @@ public class ProductController {
         }
 
     }
+
+    @GetMapping
+    public ResponseEntity<?> getAllProducts(){
+        List product = productService.getAllActiveProduct();
+        return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable String id){
+    try{
+        ProductResponse product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
+    } catch (RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+    }
+
+    @GetMapping("/seller/{sellerId}")
+    public ResponseEntity<List<?>> getProductBySeller(@PathVariable String  sellerId){
+    List<?> products = productService.getProductBySeller(sellerId);
+    return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/my-products")
+    public ResponseEntity<List<?>> getMyProducts(Authentication authentication){
+        String sellerId = (String) authentication.getPrincipal();
+        List<?> products = productService.getProductBySeller(sellerId);
+        return ResponseEntity.ok(products);
+
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<?>> getProductsByCategory(@PathVariable String category){
+        List<?> products = productService.getProductByCategory(category);
+        return ResponseEntity.ok(products);
+    }
+
 }
