@@ -20,7 +20,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity createProduct(@Valid @RequestBody ProductRequest request, Authentication authentication ){
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest request, Authentication authentication ){
         try{
             String sellerId =  (String)  authentication.getPrincipal();
             ProductResponse response = productService.createProduct(request,sellerId);
@@ -66,5 +66,13 @@ public class ProductController {
         List<?> products = productService.getProductByCategory(category);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<?>> searchProducts(@RequestParam String Keyword){
+List<?> products = productService.searchProduct(Keyword);
+return  ResponseEntity.ok(products);
+    }
+
+
 
 }
