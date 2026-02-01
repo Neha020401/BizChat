@@ -73,6 +73,24 @@ List<?> products = productService.searchProduct(Keyword);
 return  ResponseEntity.ok(products);
     }
 
+    @GetMapping("/filter/price")
+    public ResponseEntity<List<?>> filterByPrice(@RequestParam Double minPrice, @RequestParam Double maxPrice){
+        List<?> Products = productService.filterByPrice(minPrice,maxPrice);
+        return  ResponseEntity.ok(Products);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable String id, @Valid @RequestBody  ProductRequest request,
+                                        Authentication authentication){
+        try{
+            String userId = (String) authentication.getPrincipal();
+            ProductResponse response = productService.updateProduct(id,request,userId);
+            return  ResponseEntity.ok(response);
+            } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 
 }
