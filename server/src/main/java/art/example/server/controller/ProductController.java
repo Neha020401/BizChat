@@ -91,6 +91,18 @@ return  ResponseEntity.ok(products);
         }
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteProduct(
+            @PathVariable String id,
+            Authentication authentication
+    ){
+try{
+    String userId =  (String) authentication.getPrincipal();
+    productService.deleteProduct(id, userId);
+    return  ResponseEntity.ok("Product " + id +" is deleted");
+}catch (RuntimeException e ){
+    return  ResponseEntity.badRequest().body(e.getMessage());
+}
+    }
 
 }
