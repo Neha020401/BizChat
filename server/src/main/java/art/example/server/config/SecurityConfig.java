@@ -32,7 +32,7 @@ http
         .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/whoAreWe/StupidCreature/**","/whoAreWe/test/**","/test/api/**").permitAll()
+                .requestMatchers("/BizChat/**","/BizChat/whoAreWe/test/**","/BizChat/test/api/**").permitAll()
                 .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

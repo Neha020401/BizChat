@@ -30,7 +30,7 @@ try{
 
     String path = request.getServletPath();
 
-    if (path.startsWith("/whoAreWe/StupidCreature")) {
+    if (path.startsWith("/BizChat/whoAreWe/StupidCreature")) {
         filterChain.doFilter(request, response);
         return;
     }

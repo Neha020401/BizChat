@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ResourceBundle;
 
 @RestController
-@RequestMapping("/whoAreWe/StupidCreature")
+@RequestMapping("/BizChat/whoAreWe/StupidCreature")
 @CrossOrigin(origins = "*")
 public class AuthController
 {
