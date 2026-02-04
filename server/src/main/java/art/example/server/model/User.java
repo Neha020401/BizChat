@@ -18,7 +18,7 @@ public class User {
     private String email;
 
     private String password;
-    private String role; // Roles are Buyer(ArtLover), Seller(TheArtisit), and Both
+    private String role; // Roles are Buyer(ArtLover), Seller(The Artist), and Both
     private Profile profile;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

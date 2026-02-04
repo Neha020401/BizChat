@@ -39,7 +39,7 @@ public class Order {
     private  LocalDateTime updatedAt;
 
     @Data
-    public static class ShippingAddress(){
+    public static class ShippingAddress{
         private String street;
         private String city;
         private String state;
