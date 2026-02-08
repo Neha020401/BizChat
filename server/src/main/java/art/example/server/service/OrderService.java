@@ -11,6 +11,11 @@ import art.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 @Service
 public class OrderService {
 
@@ -71,6 +76,58 @@ public class OrderService {
         return mapToResponse(savedOrder);
     }
 
+    public List<OrderResponse> getBuyerOrders(String buyerId){
+        List<Order> orders = orderRepository.findByBuyerId(buyerId);
+        return orders.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderResponse> getSellerOrders(String sellerId){
+        List<Order> orders = orderRepository.findBySellerId(sellerId);
+        return orders.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public OrderResponse getOrderById(String orderId, String userId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()-> new RuntimeException("Order not found"));
+        if(!order.getBuyerId().equals(userId) && !order.getSellerId().equals(userId)){
+            throw  new RuntimeException("You are not authorized to view this order");
+        }
+
+        return mapToResponse(order);
+    }
+
+    public OrderResponse updateOrderStatus(String orderId,String status, String sellerId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()-> new RuntimeException(" Order not found"));
+
+        if(!order.getSellerId().equals(sellerId)){
+            throw  new RuntimeException("you are not authorized to update  this order");
+        }
+
+        List<String> validStatus = List.of("PENDING","CONFIRMED","SHIPPED","DELIVERED","CANCELLED");
+        if(!validStatus.contains(status)){
+            throw new RuntimeException("Invalid status");
+        }
+
+        order.setStatus(status);
+        order.setUpdatedAt(LocalDateTime.now());
+
+        if(status.equals("CANCELLED")){
+            Product product = productRepository.findById(order.getProductId()).orElse(null);
+            if(product != null){
+                product.setStock(product.getStock()  +order.getQuantity());
+                product.setStatus("ACTIVE");
+                productRepository.save(product);
+            }
+        }
+        Order updateOrder = orderRepository.save(order);
+        return  mapToResponse(updateOrder);
+
+    }
 
     private OrderResponse mapToResponse(Order order){
         User buyer = userRepository.findById(order.getBuyerId()).orElse(null);
