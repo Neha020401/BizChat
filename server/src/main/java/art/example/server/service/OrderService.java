@@ -126,7 +126,32 @@ public class OrderService {
         }
         Order updateOrder = orderRepository.save(order);
         return  mapToResponse(updateOrder);
+    }
 
+    public OrderResponse cancelOrder(String orderId, String buyerId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()-> new RuntimeException(" Order not found "));
+
+        if(!order.getBuyerId().equals(buyerId)){
+            throw new RuntimeException("You are not authorized to cancel this order");
+        }
+
+        if(!order.getStatus().equals("PENDING")){
+            throw  new RuntimeException("Cannot cancel the order. Currect Status: " + order.getStatus());
+        }
+
+        order.setStatus("CANCELLED");
+        order.setUpdatedAt(LocalDateTime.now());
+
+        Product product = productRepository.findById(order.getProductId()).orElse(null);
+        if(product != null){
+            product.setStock(product.getStock() + order.getQuantity());
+            product.setStatus("ACTIVE");
+            productRepository.save(product);
+        }
+
+        Order updateOrder = orderRepository.save(order);
+        return  mapToResponse(updateOrder);
     }
 
     private OrderResponse mapToResponse(Order order){
