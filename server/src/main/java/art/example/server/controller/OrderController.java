@@ -19,7 +19,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity createOrder(
+    public ResponseEntity<?> createOrder(
             @Valid @RequestBody OrderRequest request,
             Authentication authentication
     ){
@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getOrderById(
+    public ResponseEntity<?> getOrderById(
             @PathVariable String id,
             Authentication authentication){
         try{
@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}/cancel")
-    public ResponseEntity cancelOrder(
+    public ResponseEntity<?> cancelOrder(
             @PathVariable String id,
             Authentication authentication
     ){

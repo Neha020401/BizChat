@@ -9,6 +9,7 @@ import art.example.server.repository.UserRepository;
 import art.example.server.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +56,20 @@ public class WishlistService {
                 } )
                 .filter(item -> item != null)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String removeFromWishList(String userId, String productId){
+        if(!wishlistRepository.existsByUserIdAndProductId(userId,productId)){
+            throw new RuntimeException("Product not in wishList");
+        }
+        wishlistRepository.deleteByUserIdAndProductId(userId,productId);
+        return  "Product removed for the WishList";
+    }
+
+
+    public Boolean isInWishlist(String userId, String productId){
+        return  wishlistRepository.existsByUserIdAndProductId(userId,productId);
     }
 
     public ProductResponse mapProductToResponse(Product product,  User seller){
