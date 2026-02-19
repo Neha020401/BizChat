@@ -24,6 +24,9 @@ public class ChatMessage {
     @Indexed
     private  String receiverId;
 
+//    @Indexed
+//    private  String receiverName;
+
     private  String message;
 
     private  Boolean isRead;
