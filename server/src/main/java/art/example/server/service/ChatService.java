@@ -98,6 +98,22 @@ ChatMessage lastMessage = message.stream()
         return conversations;
     }
 
+    public void markMessageAsRead(String converstationId,String userId){
+List<ChatMessage> messages = chatMessageRepository.findByConversationIdOrderByTimestampAsc(converstationId);
+
+messages.stream()
+        .filter(m -> m.getIsRead().equals(userId) && !m.getIsRead())
+        .forEach(m ->{
+            m.setIsRead(true);
+            chatMessageRepository.save(m);
+        });
+    }
+
+    public Long getUnreadCount(String userId){
+        return  chatMessageRepository.countByReceiverIdAndIsReadFalse(userId);
+    }
+
+
     private ChatMessageDTO mapToDTO(ChatMessage message){
         User sender = userRepository.findById(message.getSendId()).orElse(null);
         User receiver = userRepository.findById(message.getReceiverId()).orElse(null);
