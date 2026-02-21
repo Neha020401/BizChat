@@ -17,6 +17,8 @@ public class Notification {
     @Indexed
     private String userId;
 
+    private  String type ;
+
     private String title;
 
     private String message;
