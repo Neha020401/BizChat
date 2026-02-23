@@ -40,6 +40,35 @@ public class NotificationService {
 
     public List<Notification> getUserNotification(String userId){
         return  notificationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
 
+    public void markAsRead(String notificationId){
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(()-> new RuntimeException("Notification not found "));
+
+        notification.setIsRead(true);
+        notificationRepository.save(notification);
+    }
+
+    public void markAllAsRead(String userId){
+        List<Notification> notifications = notificationRepository.findByUserIdAndIsReadFalseOrderByCreatedAtDesc(userId);
+        notifications.forEach(n -> {
+            n.setIsRead(true);
+            notificationRepository.save(n);
+        });
+    }
+
+    public  Long getUnReadCount(String userId){
+        return  notificationRepository.countByUserIdAndIsReadFalse(userId);
+    }
+
+    public void deleteNotification(String notificationId, String userId){
+        Notification notification  = notificationRepository.findById(notificationId)
+                .orElseThrow(()-> new RuntimeException("Notification not found "));
+
+        if(!notification.getUserId().equals(userId)){
+            throw new RuntimeException("Not authorized to delete this notification");
+        }
+        notificationRepository.delete(notification);
     }
 }

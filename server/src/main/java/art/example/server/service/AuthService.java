@@ -28,6 +28,7 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email is already registered");
         }
+
         if (!request.getRole().equals("BUYER") &&
                 !request.getRole().equals("SELLER") &&
                 !request.getRole().equals("BOTH")) {
