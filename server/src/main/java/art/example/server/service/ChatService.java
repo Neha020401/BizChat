@@ -24,7 +24,7 @@ public class ChatService {
     @Autowired
     private UserRepository userRepository;
 
-    public String  generateConversation(String userId1, String userId2){
+    public String  generateConversationId(String userId1, String userId2){
         if(userId1.compareTo(userId2) < 0){
             return  userId1  + "_" + userId2;
         }else {
@@ -34,7 +34,7 @@ public class ChatService {
 
     public ChatMessageDTO sendMessage(String senderId, String  receiverId, String messageText){
 
-        String conversationId = generateConversation(senderId, receiverId);
+        String conversationId = generateConversationId(senderId, receiverId);
 
         ChatMessage message = new ChatMessage();
         message.setConversationId(conversationId);
@@ -47,7 +47,7 @@ public class ChatService {
     }
 
     public List<?> getConversationHistory(String userId1, String userId2){
-        String  conversationId = generateConversation(userId1,userId2);
+        String  conversationId = generateConversationId(userId1,userId2);
         List<ChatMessage> message = chatMessageRepository.findByConversationIdOrderByTimestampAsc(conversationId);
 
         return  message.stream()
