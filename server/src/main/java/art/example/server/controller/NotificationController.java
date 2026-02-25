@@ -36,4 +36,32 @@ public class NotificationController {
         notificationService.markAsRead(id);
         return  ResponseEntity.ok("Notification marked as read");
     }
+
+    @GetMapping("/read-all")
+    public  ResponseEntity<?> markAllRead(Authentication authentication){
+        String userId = (String)  authentication.getPrincipal();
+        notificationService.markAllAsRead(userId);
+        return ResponseEntity.ok("All notification  marked as read");
+    }
+
+    @GetMapping("/unread-count")
+    public ResponseEntity<?> getUnReadCount(Authentication authentication){
+        String userId = (String) authentication.getPrincipal();
+        Long count = notificationService.getUnReadCount(userId);
+        return  ResponseEntity.ok(count);
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<?> deleteNotification(
+            @PathVariable String id,
+            Authentication authentication
+    ){
+        try{
+        String  userId = (String) authentication.getPrincipal();
+        notificationService.deleteNotification(id ,userId);
+        return ResponseEntity.ok("Notification  deleted");
+        }catch (RuntimeException e){
+return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

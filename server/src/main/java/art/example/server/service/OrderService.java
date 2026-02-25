@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     @Autowired
+    private  NotificationService notificationService;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -73,6 +76,14 @@ public class OrderService {
 
         Order savedOrder  = orderRepository.save(order);
 
+        notificationService.createNotification(
+                savedOrder.getSellerId(),
+                "ORDER",
+                "NEW ORDER RECEIVED ",
+                    "You have received  a new order  for" + product.getTitle(),
+                savedOrder.getId()
+        );
+
         return mapToResponse(savedOrder);
     }
 
@@ -125,6 +136,16 @@ public class OrderService {
             }
         }
         Order updateOrder = orderRepository.save(order);
+
+        String notificationMessage = "Your order status  has been  updated to " +  status;
+        notificationService.createNotification(
+                order.getBuyerId(),
+                "STATUS UPDATE",
+                "Order  Status  Updated",
+                notificationMessage,
+                orderId
+        );
+
         return  mapToResponse(updateOrder);
     }
 

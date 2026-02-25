@@ -59,6 +59,21 @@ public class OrderController {
         }
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity updateOrderStatus(
+            @PathVariable String id,
+            @RequestParam String status,
+            Authentication authentication
+    ){
+try{
+    String sellerId = (String) authentication.getPrincipal();
+    OrderResponse  response = orderService.updateOrderStatus(id,status,sellerId);
+    return  ResponseEntity.ok(response);
+}catch (RuntimeException e){
+    return ResponseEntity.badRequest().body(e.getMessage());
+}
+    }
+
     @PutMapping("/{id}/cancel")
     public ResponseEntity<?> cancelOrder(
             @PathVariable String id,
