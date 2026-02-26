@@ -5,7 +5,6 @@ import art.example.server.model.Product;
 import art.example.server.model.User;
 import art.example.server.model.Wishlist;
 import art.example.server.repository.ProductRepository;
-import art.example.server.repository.UserRepository;
 import art.example.server.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class WishlistService {
     private ProductRepository productRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     public  String addToWishList(String userId, String productId){
         Product product = productRepository.findById(productId)
@@ -51,7 +50,7 @@ public class WishlistService {
                     Product product = productRepository.findById(item.getProductId()).orElse(null);
                     if(product == null) return  null ;
 
-                    User seller =  userRepository.findById(product.getSellerId()).orElse(null);
+                    User seller =  userService.getUserById(product.getSellerId());
                     return  mapProductToResponse(product,seller);
                 } )
                 .filter(item -> item != null)

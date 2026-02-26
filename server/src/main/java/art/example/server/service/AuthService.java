@@ -22,10 +22,13 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     public AuthResponse signup(SignupRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userService.emailExists(request.getEmail())) {
             throw new RuntimeException("Email is already registered");
         }
 
@@ -62,8 +65,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email "));
+        User user = userService.getUserByEmail(request.getEmail());
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid  password");

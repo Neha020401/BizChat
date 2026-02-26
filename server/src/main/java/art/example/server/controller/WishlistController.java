@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/BizChat/api/wishlist")
 @CrossOrigin(origins = "*")
@@ -13,6 +15,8 @@ public class WishlistController {
 
     @Autowired
     private WishlistService wishlistService;
+
+
 
     @PostMapping("/{productId}")
     public ResponseEntity<?> addToWishList(
@@ -29,6 +33,14 @@ public class WishlistController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List> getWishlist(Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
+        List wishlist = wishlistService.getWishList(userId);
+        return ResponseEntity.ok(wishlist);
+    }
+
+
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> removeFromWishList(
             @PathVariable String  productId,
@@ -43,6 +55,8 @@ public class WishlistController {
         }
 
     }
+
+
 
     @GetMapping("/check/{productId}")
     public ResponseEntity<?>  isInWishlist(

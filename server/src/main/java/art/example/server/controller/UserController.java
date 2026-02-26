@@ -65,10 +65,8 @@ try{
     @GetMapping("/sellers")
     public ResponseEntity<List<User>> getAllSellers() {
         List<User> sellers = userService.getAllSellers();
-
         // Remove passwords
         sellers.forEach(seller -> seller.setPassword(null));
-
         return ResponseEntity.ok(sellers);
     }
 

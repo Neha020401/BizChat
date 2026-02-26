@@ -7,7 +7,6 @@ import art.example.server.model.Product;
 import art.example.server.model.User;
 import art.example.server.repository.OrderRepository;
 import art.example.server.repository.ProductRepository;
-import art.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,9 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     @Autowired
+    private  UserService userService;
+
+    @Autowired
     private  NotificationService notificationService;
 
     @Autowired
@@ -28,8 +30,6 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     public OrderResponse createOrder(
             OrderRequest request,
@@ -46,8 +46,7 @@ public class OrderService {
             throw new RuntimeException("Insufficient stock. Available:" + product.getStock());
         }
 
-        User buyer = userRepository.findById(buyerId)
-                .orElseThrow(()-> new RuntimeException("Buyer not found"));
+        User buyer = userService.getUserById(buyerId);
 
         Double totalPrice = product.getPrice() * request.getQuantity();
 
@@ -176,8 +175,8 @@ public class OrderService {
     }
 
     private OrderResponse mapToResponse(Order order){
-        User buyer = userRepository.findById(order.getBuyerId()).orElse(null);
-        User seller =  userRepository.findById(order.getSellerId()).orElse(null);
+        User buyer = userService.getUserById(order.getBuyerId());
+        User seller =  userService.getUserById(order.getSellerId());
 
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());

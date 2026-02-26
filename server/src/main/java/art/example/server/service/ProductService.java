@@ -5,7 +5,6 @@ import art.example.server.dto.ProductResponse;
 import art.example.server.model.Product;
 import art.example.server.model.User;
 import art.example.server.repository.ProductRepository;
-import art.example.server.repository.UserRepository;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,11 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
 
     public ProductResponse createProduct(ProductRequest request, String sellerId){
-        User seller = userRepository.findById(sellerId).
-                orElseThrow(()->new RuntimeException("Seller not found"));
+        User seller = userService.getUserById(sellerId);
 
         if(!seller.getRole().equals("SELLER") && ! seller.getRole().equals("BOTH")){
             throw  new RuntimeException("User is not authorized to sell products ");
@@ -180,7 +179,7 @@ return  mapToResponseWithSeller(product);
     }
 
     private ProductResponse mapToResponseWithSeller(Product product) {
-        User seller = userRepository.findById(product.getSellerId()).orElse(null);
+        User seller = userService.getUserById(product.getSellerId());
         return mapToResponse(product, seller);
     }
 

@@ -5,7 +5,7 @@ import art.example.server.dto.ConversationDTO;
 import art.example.server.model.ChatMessage;
 import art.example.server.model.User;
 import art.example.server.repository.ChatMessageRepository;
-import art.example.server.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,9 @@ public class ChatService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
+
     @Autowired
-    private UserRepository userRepository;
+    private  UserService userService;
 
     public String  generateConversationId(String userId1, String userId2){
         if(userId1.compareTo(userId2) < 0){
@@ -78,7 +79,7 @@ ChatMessage lastMessage = message.stream()
                 ? lastMessage.getReceiverId()
                 : lastMessage.getSendId();
 
-        User otherUser = userRepository.findById(otherUserId).orElse(null);
+        User otherUser = userService.getUserById(otherUserId);
 
         Long unreadCount = message.stream()
                 .filter(m -> m.getReceiverId().equals(userId) && !m.getIsRead())
@@ -115,8 +116,8 @@ messages.stream()
 
 
     private ChatMessageDTO mapToDTO(ChatMessage message){
-        User sender = userRepository.findById(message.getSendId()).orElse(null);
-        User receiver = userRepository.findById(message.getReceiverId()).orElse(null);
+        User sender = userService.getUserById(message.getSendId());
+        User receiver = userService.getUserById(message.getReceiverId());
 
         ChatMessageDTO dto = new ChatMessageDTO();
         dto.setId(message.getId());
