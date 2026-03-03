@@ -38,8 +38,21 @@ const Login =()=>{
 
     return(
 <div>
-    Sign in To BizChat
-
+   <h2><span>Login</span> Sign in To BizChat </h2>
+   Or{' '}
+   <Link to="/signup">Create an account</Link>  
+   {
+    error && <div className="error">{error}</div>
+   }
+   <form>
+    <label>Email:</label>   
+    <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+    <label>Password:</label>   
+    <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+    <button type="submit" onClick={handleSubmit} disabled={loading}>
+        {loading ? 'Logging in...' : 'Login'}
+    </button>
+   </form>
 </div>
     
     )
