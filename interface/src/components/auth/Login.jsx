@@ -15,23 +15,34 @@ const Login =()=>{
     const navigate = useNavigate();
 
     const handleChange=(e)=>{
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const {name, value} = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]:value
+        }));
+ if (error) setError('');
     };
 
     const handleSubmit =async (e)=>{
         e.preventDefault();
 
-        setError('');
+       if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    setError('');
         setLoading(true);
 
         try{
             await login(formData);
             navigate("/dashboard");
         }catch(err){
-            setError(err.response?.data || "Login failed. Please try again.");
+          
+         setError(
+        err.response?.data?.message || 
+        err.response?.data || 
+        'Login failed. Please check your credentials.'
+            );
         }finally{
             setLoading(false);  
     }   };

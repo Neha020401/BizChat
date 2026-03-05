@@ -16,7 +16,7 @@ const Dashboard = () => {
                 </li>
                 <li>Quick Action </li>
                     <li>View Profile</li>
-                    <li>Browse Products</li>
+                    <li>Browse Products</li> 
                     <li>My Orders</li>
                     <li>Wishlist</li>
                     <li>Messages</li>
