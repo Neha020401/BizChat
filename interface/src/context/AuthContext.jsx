@@ -10,20 +10,32 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Check if user is logged in on mount
     const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
+    if (currentUser) {
+      setUser(currentUser);
+    }
     setLoading(false);
   }, []);
 
   const login = async (credentials) => {
-    const userData = await authService.login(credentials);
-    setUser(userData);
-    return userData;
+    try {
+      const userData = await authService.login(credentials);
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const signup = async (userData) => {
-    const newUser = await authService.signup(userData);
-    setUser(newUser);
-    return newUser;
+    try {
+      const newUser = await authService.signup(userData);
+      setUser(newUser);
+      return newUser;
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -40,10 +52,17 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  }
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Custom hook to use auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
