@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Dashboard from './pages/Dashboard';
+import ProductsPage from './pages/ProductsPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 function App() {
   return (
@@ -23,6 +25,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <ProductsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products/:id"
+              element={
+                <ProtectedRoute>
+                  <ProductDetailPage />
                 </ProtectedRoute>
               }
             />
