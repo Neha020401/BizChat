@@ -20,9 +20,9 @@ return(
               <>
                 <Link
                   to="/login"
-                  className="px-8 py-3 bg-black-600 text-blue rounded-lg hover:bg-grey-700 text-lg font-semibold"
+                  className="m-10 px-8 py-3 bg-black-600 text-blue rounded-lg hover:bg-grey-700 text-lg font-semibold"
                 >
-                 Login In
+                 Login In 
                 </Link>
                 <Link
                   to="/signup"
