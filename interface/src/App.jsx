@@ -8,6 +8,8 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Dashboard from './pages/Dashboard';
 import ProductsPage from './pages/ProductsPage';
+import AddProductPage from './pages/AddProductPage';
+import MyProductsPage from './pages/MyProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 
 function App() {
@@ -44,6 +46,22 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+            path="/add-product"
+            element={
+              <ProtectedRoute>
+                <AddProductPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-products"
+            element={
+              <ProtectedRoute>
+                <MyProductsPage />
+              </ProtectedRoute>
+            }
+          />
           </Routes>
         </div>
       </Router>
