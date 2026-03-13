@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ResourceBundle;
 
+
 @RestController
-@RequestMapping("/BizChat/whoAreWe/StupidCreature")
+@RequestMapping("/BizChat/verifyuser")
 @CrossOrigin(origins = "*")
 public class AuthController
 {
@@ -39,13 +40,13 @@ public class AuthController
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginRequest request){
-try{
-    AuthResponse response = authService.login(request);
-    return  ResponseEntity.ok(response);
+        try{
+            AuthResponse response = authService.login(request);
+            return  ResponseEntity.ok(response);
 
-} catch (RuntimeException e) {
-    return ResponseEntity.badRequest().body(e.getMessage());
-}
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/db-test")
