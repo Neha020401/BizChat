@@ -44,6 +44,34 @@ const Dashboard = () => {
               <button className="p-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700">
                 Messages
               </button>
+
+              {/* Seller-Specific Section */}
+{(user?.role === 'SELLER' || user?.role === 'BOTH') && (
+  <div className="bg-white rounded-lg shadow p-6 mt-8">
+    <h2 className="text-xl font-semibold mb-4 text-gray-900">Seller Dashboard</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Link
+        to="/add-product"
+        className="flex items-center p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition"
+      >
+        <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+        <span className="font-medium">Add New Product</span>
+      </Link>
+
+      <Link
+        to="/my-products"
+        className="flex items-center p-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg hover:from-green-700 hover:to-teal-700 transition"
+      >
+        <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <span className="font-medium">Manage My Products</span>
+      </Link>
+    </div>
+  </div>
+)}
             </div>
           </div>
         </div>
