@@ -6,21 +6,21 @@ const Home = () => {
 const {isAuthenticated} = useAuth();
 
 return(
-     <div className="min-h-screen bg-linear-to-b from-blue-50 to-white">
+     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
-          <h1 className="text-5l font-extrabold text-gray-900 mb-6">
-            Welcome to Art Marketplace
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
+            Welcome to BizChat
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Buy and sell beautiful artwork from talented artists around the world
+            Connect and collaborate with businesses around the world
           </p>
  <div className="flex justify-center gap-4">
             {!isAuthenticated ? (
               <>
                 <Link
                   to="/login"
-                  className="m-10 px-8 py-3 bg-black-600 text-blue rounded-lg hover:bg-grey-700 text-lg font-semibold"
+                  className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-lg font-semibold"
                 >
                  Login In 
                 </Link>
