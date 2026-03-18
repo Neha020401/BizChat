@@ -139,7 +139,7 @@ const MyProductsPage = () => {
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center">
-                        <div className="h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200">
+                        <div className="h-16 w-16 shrink-0 rounded-lg overflow-hidden bg-gray-200">
                           {product.images && product.images.length > 0 ? (
                             <img
                               src={product.images[0]}
@@ -150,7 +150,7 @@ const MyProductsPage = () => {
                               }}
                             />
                           ) : (
-                            <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100 to-purple-100">
+                            <div className="flex items-center justify-center h-full bg-linear-to-br from-blue-100 to-purple-100">
                               <span className="text-2xl">🎨</span>
                             </div>
                           )}
