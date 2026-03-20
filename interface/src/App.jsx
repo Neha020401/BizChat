@@ -11,6 +11,10 @@ import ProductsPage from './pages/ProductsPage';
 import AddProductPage from './pages/AddProductPage';
 import MyProductsPage from './pages/MyProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import WishlistPage from './pages/WishlistPage';
+import Checkoutpage from './pages/CheckoutPage';
+import SellerOrdersPage from './pages/SellerOrdersPage';
+import MyOrdersPage from './pages/MyOrdersPage';
 
 function App() {
   return (
@@ -59,6 +63,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <MyProductsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout/:productId"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute>
+                <MyOrdersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seller-orders"
+            element={
+              <ProtectedRoute>
+                <SellerOrdersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <WishlistPage />
               </ProtectedRoute>
             }
           />

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import productService from '../services/productService';
 import { useAuth } from '../context/AuthContext';
+import wishlistService from '../services/wishlistService';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,6 +20,22 @@ const ProductDetailPage = () => {
   useEffect(() => {
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+  if (product) {
+    checkWishlistStatus();
+  }
+}, [product]);
+
+const checkWishlistStatus = async () => {
+  try {
+    const inWishlist = await wishlistService.isInWishlist(product.id);
+    setIsInWishlist(inWishlist);
+  } catch (err) {
+    // Ignore error
+  }
+};
+
 
   const fetchProduct = async () => {
     setLoading(true);
@@ -35,10 +55,24 @@ const ProductDetailPage = () => {
     navigate(`/checkout/${id}`);
   };
 
-  const handleAddToWishlist = () => {
-    // We'll implement this later
-    alert('Wishlist feature coming soon!');
-  };
+  const handleAddToWishlist = async () => {
+  setWishlistLoading(true);
+  try {
+    if (isInWishlist) {
+      await wishlistService.removeFromWishlist(product.id);
+      setIsInWishlist(false);
+      alert('Removed from wishlist');
+    } else {
+      await wishlistService.addToWishlist(product.id);
+      setIsInWishlist(true);
+      alert('Added to wishlist');
+    }
+  } catch (err) {
+    alert(err.response?.data || 'Failed to update wishlist');
+  } finally {
+    setWishlistLoading(false);
+  }
+};
 
   const handleContactSeller = () => {
     // Navigate to chat (we'll implement this later)
@@ -197,12 +231,17 @@ const ProductDetailPage = () => {
                 </button>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={handleAddToWishlist}
-                    className="border-2 border-blue-600 text-blue-600 py-2 rounded-lg hover:bg-blue-50 font-semibold"
-                  >
-                    ♥ Wishlist
-                  </button>
+                 <button
+  onClick={handleAddToWishlist}
+  disabled={wishlistLoading}
+  className={`border-2 ${
+    isInWishlist 
+      ? 'border-red-600 text-red-600 bg-red-50' 
+      : 'border-blue-600 text-blue-600'
+  } py-2 rounded-lg hover:bg-blue-50 font-semibold`}
+>
+  {isInWishlist ? '❤️ In Wishlist' : '♥ Add to Wishlist'}
+</button>
 
                   <button
                     onClick={handleContactSeller}
