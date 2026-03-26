@@ -19,6 +19,7 @@ import MyOrdersPage from './pages/MyOrdersPage';
 function App() {
   return (
     <AuthProvider>
+       <WebSocketProvider>
       <Router>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
@@ -98,9 +99,26 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+                path="/chat"
+                element={
+                  <ProtectedRoute>
+                    <ChatPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat/:userId"
+                element={
+                  <ProtectedRoute>
+                    <ChatPage />
+                  </ProtectedRoute>
+                }
+              />
           </Routes>
         </div>
       </Router>
+      </WebSocketProvider>
     </AuthProvider>
   );
 }

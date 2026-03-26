@@ -75,9 +75,8 @@ const checkWishlistStatus = async () => {
 };
 
   const handleContactSeller = () => {
-    // Navigate to chat (we'll implement this later)
-    navigate(`/chat/${product.sellerId}`);
-  };
+  navigate(`/chat/${product.sellerId}`);
+};
 
   if (loading) {
     return (
@@ -134,7 +133,7 @@ const checkWishlistStatus = async () => {
                       }}
                     />
                   ) : (
-                    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-100 to-purple-100">
+                    <div className="flex items-center justify-center h-full bg-linear-to-br from-blue-100 to-purple-100">
                       <span className="text-9xl">🎨</span>
                     </div>
                   )}
@@ -181,7 +180,7 @@ const checkWishlistStatus = async () => {
 
               {/* Seller Info */}
               <div className="flex items-center mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                <div className="w-10 h-10 bg-linear-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                   {product.sellerName.charAt(0)}
                 </div>
                 <div>
