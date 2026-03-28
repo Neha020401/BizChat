@@ -49,7 +49,7 @@ public class ChatService {
 
     public List<?> getConversationHistory(String userId1, String userId2){
         String  conversationId = generateConversationId(userId1,userId2);
-        List<ChatMessage> message = chatMessageRepository.findByConversationIdOrderByTimestampAsc(conversationId);
+        List<ChatMessage> message = chatMessageRepository.findByConversationIdOrderByTimeStampAsc(conversationId);
 
         return  message.stream()
                 .map(this::mapToDTO)
@@ -100,7 +100,7 @@ ChatMessage lastMessage = message.stream()
     }
 
     public void markMessageAsRead(String converstationId,String userId){
-List<ChatMessage> messages = chatMessageRepository.findByConversationIdOrderByTimestampAsc(converstationId);
+List<ChatMessage> messages = chatMessageRepository.findByConversationIdOrderByTimeStampAsc(converstationId);
 
 messages.stream()
         .filter(m -> m.getIsRead().equals(userId) && !m.getIsRead())

@@ -59,9 +59,4 @@ public class AuthController
         }
     }
 
-    @GetMapping("/test")
-    public  ResponseEntity test(){
-        return  ResponseEntity.ok("Auth endpoint working");
-    }
-
 }
