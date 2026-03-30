@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import Home from './pages/Home';
+import { WebSocketProvider } from './context/WebSocketContext'; 
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Dashboard from './pages/Dashboard';
@@ -11,8 +12,9 @@ import ProductsPage from './pages/ProductsPage';
 import AddProductPage from './pages/AddProductPage';
 import MyProductsPage from './pages/MyProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import ChatPage from './pages/ChatPage';
 import WishlistPage from './pages/WishlistPage';
-import Checkoutpage from './pages/CheckoutPage';
+import CheckoutPage from './pages/CheckoutPage';
 import SellerOrdersPage from './pages/SellerOrdersPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 
