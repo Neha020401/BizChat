@@ -39,7 +39,7 @@ public class ChatService {
 
         ChatMessage message = new ChatMessage();
         message.setConversationId(conversationId);
-        message.setSendId(senderId);
+        message.setSenderId(senderId);
         message.setReceiverId(receiverId);
         message.setMessage(messageText);
 
@@ -75,9 +75,9 @@ ChatMessage lastMessage = message.stream()
 
         if(lastMessage == null ) continue;
 
-        String otherUserId = lastMessage.getSendId().equals(userId)
+        String otherUserId = lastMessage.getSenderId().equals(userId)
                 ? lastMessage.getReceiverId()
-                : lastMessage.getSendId();
+                : lastMessage.getSenderId();
 
         User otherUser = userService.getUserById(otherUserId);
 
@@ -116,13 +116,13 @@ messages.stream()
 
 
     private ChatMessageDTO mapToDTO(ChatMessage message){
-        User sender = userService.getUserById(message.getSendId());
+        User sender = userService.getUserById(message.getSenderId());
         User receiver = userService.getUserById(message.getReceiverId());
 
         ChatMessageDTO dto = new ChatMessageDTO();
         dto.setId(message.getId());
         dto.setConnectionId(message.getConversationId());
-        dto.setSenderId(message.getSendId());
+        dto.setSenderId(message.getSenderId());
         dto.setSenderName(sender != null ? sender.getProfile().getName() : "Unknown");
         dto.setReceiverId(message.getReceiverId());
         dto.setReceiverName(receiver !=  null  ?  receiver.getProfile().getName() :  "Unknown");

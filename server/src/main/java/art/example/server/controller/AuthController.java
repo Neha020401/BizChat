@@ -51,12 +51,12 @@ public class AuthController
 
     @GetMapping("/db-test")
     public ResponseEntity<?> testDatabase() {
-        try {
+//        try {
             long count = userRepository.count();
             return ResponseEntity.ok("Database connected! User count: " + count);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Database error: " + e.getMessage());
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Database error: " + e.getMessage());
+//        }
     }
 
 }

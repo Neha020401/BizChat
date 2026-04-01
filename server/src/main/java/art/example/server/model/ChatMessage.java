@@ -19,7 +19,7 @@ public class ChatMessage {
     private String conversationId;
 
     @Indexed
-    private  String sendId;
+    private  String senderId;
 
     @Indexed
     private  String receiverId;
