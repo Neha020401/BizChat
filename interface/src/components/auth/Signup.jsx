@@ -9,7 +9,7 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     role: 'BUYER',
-    phone: '',
+    phoneno: '',
     bio: '',
   });
   const [error, setError] = useState('');
@@ -221,9 +221,9 @@ const Signup = () => {
               </label>
               <input
                 id="phone"
-                name="phone"
+                name="phoneno"
                 type="tel"
-                value={formData.phone}
+                value={formData.phoneno}
                 onChange={handleChange}
                 disabled={loading}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm transition disabled:bg-gray-100"
