@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ResourceBundle;
-
-
 @RestController
 @RequestMapping("/BizChat/verifyuser")
 @CrossOrigin(origins = "*")
@@ -26,6 +23,7 @@ public class AuthController
     @Autowired
     private UserRepository userRepository;
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/signup")
     public ResponseEntity signup(@Valid @RequestBody SignupRequest request){
         try{
