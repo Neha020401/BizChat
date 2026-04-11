@@ -43,12 +43,10 @@ const Login =()=>{
       navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-     if (err.response?.status === 401) {
-        setError('Invalid email or password');
-      } else {
-        setError('Something went wrong. Please try again later.');
+      setError(err.response?.data?.message ||
+         'Login failed. Please check your credentials and try again.');
         console.log('Login error details:', err);
-      }
+      
     } finally {
       setLoading(false);
     }
