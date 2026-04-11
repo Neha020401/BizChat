@@ -26,10 +26,10 @@ public class UserService {
     }
 
     public User updateProfile(String userId, User.Profile updateProfile){
-User user  =  getUserById(userId);
-user.setProfile(updateProfile);
-user.setUpdatedAt(LocalDateTime.now());
-return  userRepository.save(user);
+        User user  =  getUserById(userId);
+        user.setProfile(updateProfile);
+        user.setUpdatedAt(LocalDateTime.now());
+        return  userRepository.save(user);
     }
 
     public boolean  emailExists(String  email){

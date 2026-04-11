@@ -7,8 +7,10 @@ import art.example.server.model.User;
 import art.example.server.repository.UserRepository;
 import art.example.server.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.Console;
 
@@ -37,47 +39,62 @@ public class AuthService {
                 !request.getRole().equals("BOTH")) {
             throw new RuntimeException("Invalid Role, The role must be BUYER,SELLER, or BOTH");
         }
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setRole(request.getRole());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        User.Profile profile = new User.Profile();
-        profile.setName(request.getName());
-        profile.setBio(request.getBio());
-        profile.setPhone(request.getPhoneno());
+        try{
+            User user = new User();
+            user.setEmail(request.getEmail());
+            user.setRole(request.getRole());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setProfile(profile);
+            User.Profile profile = new User.Profile();
+            profile.setName(request.getName());
+            profile.setBio(request.getBio());
+            profile.setPhone(request.getPhoneno());
 
-        System.out.println("Before save - User: " + user);
-        User savedUser = userRepository.save(user);
-        System.out.println("After save - User ID: " + savedUser.getId());
-        System.out.println("After save - Full User: " + savedUser);
+            user.setProfile(profile);
 
-        String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
-        System.out.println(request);
-        return new AuthResponse(
-                token,
-                savedUser.getId(),
-                savedUser.getEmail(),
-                savedUser.getProfile().getName(),
-                savedUser.getRole());
+            System.out.println("Before save - User: " + user);
+            User savedUser = userRepository.save(user);
+            System.out.println("After save - User ID: " + savedUser.getId());
+            System.out.println("After save - Full User: " + savedUser);
+
+            String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
+            System.out.println(request);
+            return new AuthResponse(
+                    token,
+                    savedUser.getId(),
+                    savedUser.getEmail(),
+                    savedUser.getProfile().getName(),
+                    savedUser.getRole());
+        }catch (Exception e ){
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Signup failed. Please try again later."
+            );
+        }
     }
+
 
     public AuthResponse login(LoginRequest request) {
-        User user = userService.getUserByEmail(request.getEmail());
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid  password");
+        try{
+            User user = userService.getUserByEmail(request.getEmail());
+
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new RuntimeException("Invalid  password");
+            }
+
+            String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
+
+            return new AuthResponse(
+                    token,
+                    user.getId(),
+                    user.getEmail(),
+                    user.getProfile().getName(),
+                    user.getRole());
+        }catch (Exception e){
+            throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"So problem with the login, can't login you in ");
+        }
         }
 
-        String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
-
-        return new AuthResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getProfile().getName(),
-                user.getRole());
-    }
 }
