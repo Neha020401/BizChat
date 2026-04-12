@@ -76,13 +76,13 @@ public class AuthService {
 
 
     public AuthResponse login(LoginRequest request) {
+        User user = userService.getUserByEmail(request.getEmail());
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid  password");
+        }
 
         try{
-            User user = userService.getUserByEmail(request.getEmail());
-
-            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                throw new RuntimeException("Invalid  password");
-            }
 
             String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
 
@@ -93,7 +93,7 @@ public class AuthService {
                     user.getProfile().getName(),
                     user.getRole());
         }catch (Exception e){
-            throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"So problem with the login, can't login you in ");
+            throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Some problem with the login, can't login you in ");
         }
         }
 
