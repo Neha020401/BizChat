@@ -12,7 +12,7 @@ const AddProductPage = () => {
     description: '',
     price: '',
     category: 'PAINTING',
-    images: [''],
+    images: [],
     stock: 1,
     status: 'ACTIVE',
     tags: '',
@@ -25,6 +25,8 @@ const AddProductPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [uploadingImages, setUploadingImages] = useState(false);
+
 
   const categories = ['PAINTING', 'SCULPTURE', 'DIGITAL', 'PHOTOGRAPHY', 'OTHER'];
 
