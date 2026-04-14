@@ -72,27 +72,61 @@ const AddProductPage = () => {
     }));
   };
 
-  const handleImageChange = (index, value) => {
-    const newImages = [...formData.images];
-    newImages[index] = value;
-    setFormData((prev) => ({
+const handleImageUpload = async (e) => {
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return;
+
+  const validTypes = ['image/jpeg','image/jpg','image/png','image/gif','image/webp'];
+  const invalidFiles = files.filter(file => !validTypes.includes(file.type));
+
+  if(invalidFiles.length > 0) {
+  sertError('Please upload only image files (jpg, png, gif, webp)');
+    return;
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  const oversizedFiles = files.filter(file => file.size > maxSize);
+
+  if(oversizedFiles.length > 0) {
+    setError('Each image must be less than 5MB');
+    return; 
+  }
+
+  setUploadingImages(true);
+  setError('');
+
+  try{
+    const base64Images = await Promise.all(
+      files.map(file => convertToBase64(file))
+    );
+
+    setFormData(prev => ({
       ...prev,
-      images: newImages,
+      images: [...prev.images, ...base64Images],
     }));
+
+    console.log(`Uploaded ${files.length} images successfully`);
+  }catch(err){
+  console.error("Error uploading images: ", err);
+  setError('Failed to upload images. Please try again.');
+  }finally{
+    setUploadingImages(false);
+  }
+  }
+
+   const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
-  const addImageField = () => {
+ const removeImage = (index) => {
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ''],
-    }));
-  };
-
-  const removeImageField = (index) => {
-    const newImages = formData.images.filter((_, i) => i !== index);
-    setFormData((prev) => ({
-      ...prev,
-      images: newImages.length > 0 ? newImages : [''],
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -113,6 +147,11 @@ const AddProductPage = () => {
       setError('Please enter a valid stock quantity');
       return false;
     }
+
+    if (formData.images.length === 0) {
+      setError('Please upload at least one image');
+      return false;
+    }
     return true;
   };
 
@@ -127,13 +166,12 @@ const AddProductPage = () => {
     setError('');
 
     try {
-      // Prepare data
       const productData = {
         title: formData.title,
         description: formData.description,
         price: parseFloat(formData.price),
         category: formData.category,
-        images: formData.images.filter((img) => img.trim() !== ''),
+        images: formData.images,
         stock: parseInt(formData.stock),
         status: formData.status,
         tags: formData.tags
@@ -147,7 +185,14 @@ const AddProductPage = () => {
         },
       };
 
+       console.log(' Creating product:', {
+        ...productData,
+        images: `${productData.images.length} image(s)`
+      });
+
       await productService.createProduct(productData);
+      
+      console.log(' Product created successfully');
       
       // Success - navigate to my products
       navigate('/my-products');
@@ -334,38 +379,30 @@ const AddProductPage = () => {
           {/* Images */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image URLs
+              Product Images *
             </label>
-            <p className="text-sm text-gray-500 mb-3">
-              Add image URLs (e.g., from Imgur, Cloudinary, or any public URL)
-            </p>
-            {formData.images.map((image, index) => (
-              <div key={index} className="flex gap-2 mb-3">
+            {/*Uplaod Button */}
+           <div className='mb-4'>
+             <label className="cursor-pointer">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition">
+                  <div className="text-4xl mb-2">📸</div>
+                  <p className="text-gray-600 mb-1">
+                    {uploadingImages ? 'Uploading...' : 'Click to upload images'}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    PNG, JPG, GIF, WEBP up to 5MB each
+                  </p>
+                </div>
                 <input
-                  type="url"
-                  value={image}
-                  onChange={(e) => handleImageChange(index, e.target.value)}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="https://example.com/image.jpg"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  disabled={uploadingImages}
                 />
-                {formData.images.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeImageField(index)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addImageField}
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
-              + Add another image
-            </button>
+              </label>
+           </div>
           </div>
 
           {/* Tags */}
