@@ -405,6 +405,45 @@ const handleImageUpload = async (e) => {
            </div>
           </div>
 
+{/* Image Previews */}
+{
+  formData.images.length > 0 && (
+    <div>
+      <p className="text-sm text-gray-600 mb-3">
+      {formData.images.length} image(s) uploaded
+      </p>
+      <div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {
+        FormDataEvent.images.map((image, index) => (
+          <div key={index} className='relative group'>
+            <img
+            src={image}
+            alt={`Preview ${index}`}
+            className="w-full h-full object-cover rounded-lg"
+            />
+
+            <button
+            type="button"
+            onClick={()=> removeImage(index)}
+             className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition"
+            title="Remove image"
+            >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            </button>
+          <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+            #{index + 1}
+          </div>
+          </div>
+        ))
+      }
+      </div>
+    </div>
+  )
+}
+
           {/* Tags */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -427,10 +466,10 @@ const handleImageUpload = async (e) => {
           <div className="flex gap-4 pt-6">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || uploadingImages}
               className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold disabled:bg-blue-300 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creating...' : 'Create Product'}
+              {loading ? 'Creating...' : uploadingImages ? 'Uploading Images...' : 'Create Product'}
             </button>
             <button
               type="button"
