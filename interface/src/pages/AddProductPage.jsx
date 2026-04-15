@@ -80,7 +80,7 @@ const handleImageUpload = async (e) => {
   const invalidFiles = files.filter(file => !validTypes.includes(file.type));
 
   if(invalidFiles.length > 0) {
-  sertError('Please upload only image files (jpg, png, gif, webp)');
+setError('Please upload only image files (jpg, png, gif, webp)');
     return;
   }
 
@@ -406,43 +406,40 @@ const handleImageUpload = async (e) => {
           </div>
 
 {/* Image Previews */}
-{
-  formData.images.length > 0 && (
-    <div>
-      <p className="text-sm text-gray-600 mb-3">
+{formData.images.length > 0 && (
+  <div>
+    <p className="text-sm text-gray-600 mb-3">
       {formData.images.length} image(s) uploaded
-      </p>
-      <div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {
-        FormDataEvent.images.map((image, index) => (
-          <div key={index} className='relative group'>
-            <img
+    </p>
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {formData.images.map((image, index) => (
+        <div key={index} className="relative group">
+          <img
             src={image}
             alt={`Preview ${index}`}
             className="w-full h-full object-cover rounded-lg"
-            />
+          />
 
-            <button
+          <button
             type="button"
-            onClick={()=> removeImage(index)}
-             className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition"
+            onClick={() => removeImage(index)}
+            className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition"
             title="Remove image"
-            >
+          >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-            </button>
+          </button>
+
           <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
             #{index + 1}
           </div>
-          </div>
-        ))
-      }
-      </div>
+        </div>
+      ))}
     </div>
-  )
-}
+  </div>
+)}
 
           {/* Tags */}
           <div>
