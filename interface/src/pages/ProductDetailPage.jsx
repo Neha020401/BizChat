@@ -210,14 +210,14 @@ const checkWishlistStatus = async () => {
               </div>
 
               {/* Dimensions */}
-              {product.dimensions && (
+              {(product.dimensions.width != null && product.dimensions.height != null)? (
                 <div className="mb-6 p-4 bg-gray-50 rounded-lg">
                   <h3 className="font-semibold text-gray-900 mb-2">Dimensions</h3>
                   <p className="text-gray-700">
                     {product.dimensions.width} × {product.dimensions.height} {product.dimensions.unit}
                   </p>
                 </div>
-              )}
+              ): " "}
 
               {/* Action Buttons */}
               <div className="space-y-3 mb-6">
