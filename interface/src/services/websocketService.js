@@ -13,8 +13,10 @@ class WebSocketService {
       return;
     }
 
-    // Create SockJS connection
-    const socket = new SockJS('http://localhost:8080/ws');
+    // Create SockJS connection — token sent as query param since SockJS
+    // does not support custom headers during the HTTP handshake
+    const token = localStorage.getItem('token');
+    const socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
 
     // Create STOMP client
     this.client = new Client({

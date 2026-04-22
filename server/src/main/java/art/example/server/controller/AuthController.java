@@ -30,7 +30,7 @@ public class AuthController
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/signup")
-    public ResponseEntity signup(@Valid @RequestBody SignupRequest request){
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request){
         try{
             AuthResponse response = authService.signup(request);
             return ResponseEntity.ok(response);

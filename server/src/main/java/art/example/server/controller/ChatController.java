@@ -59,7 +59,7 @@ public class ChatController {
     }
 
     @GetMapping("/conversation")
-    public ResponseEntity<List> getConversation(
+    public ResponseEntity<List<ChatMessageDTO>> getConversation(
             @RequestParam String otherUserId,
             Authentication authentication
     ){
@@ -69,14 +69,14 @@ public class ChatController {
     }
 
     @GetMapping("/conversations")
-    public ResponseEntity<List> getConversations(Authentication authentication){
+    public ResponseEntity<List<ChatMessageDTO>> getConversations(Authentication authentication){
         String userId = (String) authentication.getPrincipal();
         List conversations = chatService.getUserConversations(userId);
         return  ResponseEntity.ok(conversations);
     }
 
     @PutMapping("/read")
-    public  ResponseEntity markAsRead(
+    public ResponseEntity<String> markAsRead(
             @RequestParam String otherUserId,
             Authentication authentication){
 
@@ -87,7 +87,7 @@ public class ChatController {
     }
 
     @GetMapping("/unread-count")
-    public  ResponseEntity getUnreadCount(Authentication authentication){
+    public ResponseEntity<Long> getUnreadCount(Authentication authentication){
         String userId = (String) authentication.getPrincipal();
         Long  count =  chatService.getUnreadCount(userId);
         return ResponseEntity.ok(count);

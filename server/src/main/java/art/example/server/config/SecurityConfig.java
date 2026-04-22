@@ -37,7 +37,15 @@ public class SecurityConfig {
         .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/BizChat/**","/BizChat/whoAreWe/test/**","/BizChat/test/api/**").permitAll()
+                .requestMatchers(
+                    "/BizChat/verifyuser/**",   // login & signup — public
+                    "/BizChat/products",         // browse all products — public
+                    "/BizChat/products/search",  // search — public
+                    "/BizChat/products/category/**", // filter by category — public
+                    "/BizChat/products/filter/**",   // filter by price — public
+                    "/BizChat/products/{id}",    // product detail — public
+                    "/ws/**"                     // WebSocket handshake — public
+                ).permitAll()
                 .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
