@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useWebSocket } from '../context/WebSocketContext';
 import chatService from '../services/chatService';
+import userService from '../services/userService';
 
 const ChatPage = () => {
   const { userId } = useParams();
@@ -58,14 +59,8 @@ const ChatPage = () => {
     try {
       const data = await chatService.getConversations();
       setConversations(data);
-
-      // If userId param exists, load that conversation
-      if (userId) {
-        const conv = data.find((c) => c.otherUserId === userId);
-        if (conv) {
-          setSelectedUser(conv);
-        }
-      }
+      // We don't set selectedUser here anymore to prevent race condition 
+      // with loadConversation which handles it.
     } catch (err) {
       console.error('Error fetching conversations:', err);
     } finally {
@@ -81,10 +76,15 @@ const ChatPage = () => {
       // Mark as read
       await chatService.markAsRead(otherUserId);
 
-      // Find and set selected user
-      const conv = conversations.find((c) => c.otherUserId === otherUserId);
-      if (conv) {
-        setSelectedUser(conv);
+      // Fetch user details to set selectedUser reliably
+      try {
+        const userDetails = await userService.getUserById(otherUserId);
+        setSelectedUser({
+          otherUserId: userDetails.id,
+          otherUserName: userDetails.name || 'User'
+        });
+      } catch (userErr) {
+        console.error('Error fetching user details:', userErr);
       }
     } catch (err) {
       console.error('Error loading conversation:', err);
@@ -144,7 +144,7 @@ const ChatPage = () => {
                 key={conv.conversationId}
                 onClick={() => handleSelectConversation(conv)}
                 className={`w-full p-4 border-b hover:bg-gray-50 text-left transition ${
-                  selectedUser?.conversationId === conv.conversationId
+                  selectedUser?.otherUserId === conv.otherUserId
                     ? 'bg-blue-50 border-l-4 border-l-blue-600'
                     : ''
                 }`}
