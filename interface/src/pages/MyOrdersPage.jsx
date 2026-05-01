@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import orderService from '../services/orderService';
+import OrderCard from '../components/orders/OrderCard';
 
+/**
+ * MyOrdersPage — lists all orders placed by the logged-in buyer.
+ * UI for each order is delegated to OrderCard.
+ */
 const MyOrdersPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -25,34 +30,20 @@ const MyOrdersPage = () => {
   };
 
   const handleCancelOrder = async (orderId) => {
-    if (!window.confirm('Are you sure you want to cancel this order?')) {
-      return;
-    }
-
+    if (!window.confirm('Are you sure you want to cancel this order?')) return;
     try {
       await orderService.cancelOrder(orderId);
-      fetchOrders(); // Refresh list
+      fetchOrders();
       alert('Order cancelled successfully');
     } catch (err) {
       alert(err.response?.data || 'Failed to cancel order');
     }
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      PENDING: 'bg-yellow-100 text-yellow-800',
-      CONFIRMED: 'bg-blue-100 text-blue-800',
-      SHIPPED: 'bg-purple-100 text-purple-800',
-      DELIVERED: 'bg-green-100 text-green-800',
-      CANCELLED: 'bg-red-100 text-red-800',
-    };
-    return colors[status] || 'bg-gray-100 text-gray-800';
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600" />
       </div>
     );
   }
@@ -71,72 +62,11 @@ const MyOrdersPage = () => {
         {orders.length > 0 ? (
           <div className="space-y-6">
             {orders.map((order) => (
-              <div key={order.id} className="bg-white rounded-lg shadow p-6">
-                {/* Order header */}
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm text-gray-600">
-                      Order ID: <span className="font-mono">{order.id}</span>
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Placed on: {new Date(order.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(order.status)}`}>
-                    {order.status}
-                  </span>
-                </div>
-
-                {/* Product info */}
-                <div className="flex gap-4 mb-4">
-                  <div className="text-6xl">🎨</div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{order.productTitle}</h3>
-                    <p className="text-gray-600">Seller: {order.sellerName}</p>
-                    <p className="text-gray-600">Quantity: {order.quantity}</p>
-                    <p className="text-xl font-bold text-blue-600 mt-2">
-                      ${order.totalPrice.toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Shipping address */}
-                <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                  <h4 className="font-semibold mb-2">Shipping Address</h4>
-                  <p className="text-sm text-gray-700">
-                    {order.shippingAddress.street}<br />
-                    {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}<br />
-                    {order.shippingAddress.country}<br />
-                    Phone: {order.shippingAddress.phone}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-3 flex-wrap">
-                  <button
-                    onClick={() => navigate(`/products/${order.productId}`)}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                  >
-                    View Product
-                  </button>
-                  {order.sellerId && (
-                    <button
-                      onClick={() => navigate(`/chat/${order.sellerId}`)}
-                      className="flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-800 transition-colors"
-                    >
-                      💬 Chat with Seller
-                    </button>
-                  )}
-                  {order.status === 'PENDING' && (
-                    <button
-                      onClick={() => handleCancelOrder(order.id)}
-                      className="text-red-600 hover:text-red-800 text-sm font-medium"
-                    >
-                      Cancel Order
-                    </button>
-                  )}
-                </div>
-              </div>
+              <OrderCard
+                key={order.id}
+                order={order}
+                onCancelOrder={handleCancelOrder}
+              />
             ))}
           </div>
         ) : (
