@@ -112,13 +112,21 @@ const MyOrdersPage = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
                   <button
                     onClick={() => navigate(`/products/${order.productId}`)}
                     className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                   >
                     View Product
                   </button>
+                  {order.sellerId && (
+                    <button
+                      onClick={() => navigate(`/chat/${order.sellerId}`)}
+                      className="flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-800 transition-colors"
+                    >
+                      💬 Chat with Seller
+                    </button>
+                  )}
                   {order.status === 'PENDING' && (
                     <button
                       onClick={() => handleCancelOrder(order.id)}

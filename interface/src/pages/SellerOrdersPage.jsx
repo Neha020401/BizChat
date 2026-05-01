@@ -127,19 +127,29 @@ const SellerOrdersPage = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      {order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && (
-                        <select
-                          value={order.status}
-                          onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                          className="text-sm border border-gray-300 rounded px-2 py-1"
-                        >
-                          <option value="PENDING">Pending</option>
-                          <option value="CONFIRMED">Confirmed</option>
-                          <option value="SHIPPED">Shipped</option>
-                          <option value="DELIVERED">Delivered</option>
-                          <option value="CANCELLED">Cancelled</option>
-                        </select>
-                      )}
+                      <div className="flex flex-col gap-2">
+                        {order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && (
+                          <select
+                            value={order.status}
+                            onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                            className="text-sm border border-gray-300 rounded px-2 py-1"
+                          >
+                            <option value="PENDING">Pending</option>
+                            <option value="CONFIRMED">Confirmed</option>
+                            <option value="SHIPPED">Shipped</option>
+                            <option value="DELIVERED">Delivered</option>
+                            <option value="CANCELLED">Cancelled</option>
+                          </select>
+                        )}
+                        {order.buyerId && (
+                          <button
+                            onClick={() => navigate(`/chat/${order.buyerId}`)}
+                            className="flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-800 transition-colors text-left"
+                          >
+                            💬 Chat with Buyer
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

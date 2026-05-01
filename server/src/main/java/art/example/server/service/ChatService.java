@@ -103,7 +103,7 @@ ChatMessage lastMessage = message.stream()
 List<ChatMessage> messages = chatMessageRepository.findByConversationIdOrderByTimeStampAsc(converstationId);
 
 messages.stream()
-        .filter(m -> m.getIsRead().equals(userId) && !m.getIsRead())
+        .filter(m -> m.getReceiverId().equals(userId) && !m.getIsRead())
         .forEach(m ->{
             m.setIsRead(true);
             chatMessageRepository.save(m);
