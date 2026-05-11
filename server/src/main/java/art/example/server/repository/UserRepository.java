@@ -13,9 +13,13 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Boolean existsByEmail(String email);
 
+
+    Boolean existsByEmailAndIsactive(String email, boolean isActive);
     //    String deleteByName(String name);
 
     String deleteByEmail(String email);
+
+    boolean deleteByEmailAndIsactive(String email, boolean isActive );
 
 //    List<User> findByRole(String role);
 

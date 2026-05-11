@@ -22,7 +22,7 @@ public class UserController {
 try{
     String userId = (String) authentication.getPrincipal();
     User user = userService.getUserById(userId);
-
+    
     user.setPassword(null);
 
     return  ResponseEntity.ok(user);

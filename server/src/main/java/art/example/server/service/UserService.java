@@ -37,8 +37,8 @@ return   userRepository.existsByEmail(email);
     }
 
     public List<User> getAllSellers(){
-List<User> allUsers = userRepository.findAll();
-return allUsers.stream()
+        List<User> allUsers = userRepository.findAll();
+        return allUsers.stream()
         .filter(user -> user.getRole().equals("SELLER") || user.getRole().equals("BOTH"))
         .collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package art.example.server.model;
 
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,6 +23,7 @@ public class User {
     private Profile profile;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isActive ;
 
     @Data
     public static class Profile{

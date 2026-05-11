@@ -14,4 +14,7 @@ public class LoginRequest {
     @NotBlank(message = "Please enter your password")
     private String password;
 
+
+    private  boolean active ;
+
 }
