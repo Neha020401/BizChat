@@ -1,5 +1,6 @@
 package art.example.server.model;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.groups.Default;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -14,16 +15,16 @@ public class User {
 
     @Id
     private  String id;
-
     @Indexed(unique = true)
     private String email;
-
     private String password;
     private String role; // Roles are Buyer(ArtLover), Seller(The Artist), and Both
     private Profile profile;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private boolean isActive ;
+
+    @NotNull
+    private boolean isActive = true;
 
     @Data
     public static class Profile{
@@ -37,6 +38,5 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-
 
 }

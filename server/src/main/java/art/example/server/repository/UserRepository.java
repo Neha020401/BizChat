@@ -11,19 +11,16 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByEmailAndIsActive(String email, Boolean active);
     Boolean existsByEmail(String email);
 
+    Long deleteByEmail(String email);
 
-    Boolean existsByEmailAndIsactive(String email, boolean isActive);
-    //    String deleteByName(String name);
+    Boolean existsByIsActive(Boolean isActive);
 
-    String deleteByEmail(String email);
+    List<User> findByRole(String role);
 
-    boolean deleteByEmailAndIsactive(String email, boolean isActive );
+    Optional<User> findByProfileNameAndRole(String name, String role);
 
-//    List<User> findByRole(String role);
 
-//    List<User> findByProfileName(String name);
-
-//    Optional<User> findByEmailAndRole(String email, String role);
 }

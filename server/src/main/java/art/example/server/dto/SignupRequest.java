@@ -24,6 +24,7 @@ public class SignupRequest {
     private String role;
 
    private String phoneno;
+   private String isActive;
    private String bio;
 
 }

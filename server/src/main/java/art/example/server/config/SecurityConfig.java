@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/BizChat/verifyuser/**",   // login & signup — public
+                    "/BizChat/artDummies/**",   // login & signup — public
                     "/BizChat/products",         // browse all products — public
                     "/BizChat/products/search",  // search — public
                     "/BizChat/products/category/**", // filter by category — public

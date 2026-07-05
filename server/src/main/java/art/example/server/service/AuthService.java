@@ -30,6 +30,7 @@ public class AuthService {
     private JwtTokenProvider jwtTokenProvider;
 
     public AuthResponse signup(SignupRequest request) {
+
         if (userService.emailExists(request.getEmail())) {
             throw new RuntimeException("Email is already registered");
         }
@@ -45,6 +46,7 @@ public class AuthService {
             user.setEmail(request.getEmail());
             user.setRole(request.getRole());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setActive(true);
 
             User.Profile profile = new User.Profile();
             profile.setName(request.getName());
@@ -82,6 +84,10 @@ public class AuthService {
             throw new RuntimeException("Invalid  password");
         }
 
+        if(!user.isActive()){
+            throw  new RuntimeException(" The account has been deleted ");
+        }
+
         try{
 
             String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
@@ -96,5 +102,6 @@ public class AuthService {
             throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Some problem with the login, can't login you in ");
         }
         }
+
 
 }

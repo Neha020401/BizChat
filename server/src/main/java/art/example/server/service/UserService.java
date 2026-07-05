@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public  User getUserByEmail(String email){
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmailAndIsActive(email, true )
                 .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public boolean  emailExists(String  email){
-return   userRepository.existsByEmail(email);
+            return   userRepository.existsByEmail(email);
     }
 
     public List<User> getAllSellers(){
@@ -42,10 +42,18 @@ return   userRepository.existsByEmail(email);
         .filter(user -> user.getRole().equals("SELLER") || user.getRole().equals("BOTH"))
         .collect(Collectors.toList());
     }
-public  void deleteUser(String userId){
+
+    public  String deleteUser(String userId){
+            User user = getUserById(userId);
+            userRepository.delete(user);
+            return "UserId: " + userId +" account is deleted permanently. No recovery back";
+    }
+
+    public String deactiveUser(String userId){
         User user = getUserById(userId);
-        userRepository.delete(user);
-}
+        user.setActive(false);
+        return "UserId: " + userId +" account deactivated ";
+    }
 
 
     public  User createUser(String email, String password, String role){

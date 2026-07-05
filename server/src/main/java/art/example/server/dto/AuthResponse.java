@@ -14,6 +14,7 @@ public class AuthResponse {
     private  String id ;
     private String  email;
     private String name ;
+    private boolean isActive;
     private String role ;
 
     public AuthResponse(String token,String id,String email,String name,String role){
