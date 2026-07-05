@@ -1,16 +1,18 @@
 import api from "./api";
 
 const authService = {
-signup:async(userDate)=>{
-        const response = await api.post("/verifyuser/signup",userDate);
-        if(response.data.token){
+signup:async(userData)=>{
+        const response = await api.post("/artDummies/signup",userData);
+        if(response){
             localStorage.setItem("token",response.data.token);
             localStorage.setItem("user",JSON.stringify(response.data));
+            console.alert("Signup successful:", response.data);
+            console.log(response.data.error); // Log the error message if it exists
         }
         return response.data;
 },
 login:async(credentials)=>{
-        const response = await api.post('/verifyuser/login',credentials);
+        const response = await api.post('/artDummies/login',credentials);
         if(response.data.token){
             localStorage.setItem('token',response.data.token);
             localStorage.setItem('user',JSON.stringify(response.data));
@@ -21,12 +23,17 @@ logout:()=>{
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 },
+deleteAccount:async(userId)=>{
+const response = await api.delete(`/artDummies/deleteUser/${userId}`);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    return response.data;
+},
 getCurrentUser:()=>{
     const userStr = localStorage.getItem('user');
      if (!userStr || userStr === "undefined") {
         return null;
     }
-
     try {
         return JSON.parse(userStr);
     } catch (e) {

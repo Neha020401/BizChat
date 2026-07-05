@@ -7,6 +7,7 @@ const Login =()=>{
     email: '',
     password: '',
   });
+  
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -53,19 +54,20 @@ const Login =()=>{
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-300 to-indigo-150 py-12 px-4 sm:px-6 lg:px-8">
     <center>
       <div className="max-w-md w-full">
         {/* Card Container */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        <div className="bg-white rounded-2xl shadow-xl p-20 space-y-10">
           {/* Header */}
           <div className="text-center">
-            <div className="text-5xl mb-4">🎨</div>
+            {/* <div className="text-5xl mb-4">🎨</div> */}
             <h2 className="text-3xl font-extrabold text-gray-900">
               Welcome Back
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Sign in to your Art Marketplace account
+              Sign in to your ART LAND 
+              {/* Sign in to your Art Marketplace account */}
             </p>
           </div>
 
@@ -102,7 +104,7 @@ const Login =()=>{
                 onChange={handleChange}
                 disabled={loading}
                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm transition duration-150 ease-in-out disabled:bg-gray-100 disabled:cursor-not-allowed"
-                placeholder="you@example.com"
+                placeholder="xyz@example.com"
               />
             </div>
 
@@ -134,7 +136,7 @@ const Login =()=>{
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label htmlFor="remember-me" className="ml-2 mr-5 block text-sm text-gray-900">
                   Remember me
                 </label>
               </div>
