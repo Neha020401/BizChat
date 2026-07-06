@@ -84,10 +84,6 @@ public class AuthService {
             throw new RuntimeException("Invalid  password");
         }
 
-        if(!user.isActive()){
-            throw  new RuntimeException(" The account has been deleted ");
-        }
-
         try{
 
             String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/BizChat/api/wishlist")
+@RequestMapping("/BizChat/artDummies/wishlist")
 @CrossOrigin(origins = "*")
 public class WishlistController {
 

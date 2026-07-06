@@ -164,7 +164,7 @@ const Login =()=>{
                     Signing in...
                   </>
                 ) : (
-                  'Sign in'
+                  'Log In '
                 )}
               </button>
             </div>

@@ -32,7 +32,7 @@ const checkWishlistStatus = async () => {
     const inWishlist = await wishlistService.isInWishlist(product.id);
     setIsInWishlist(inWishlist);
   } catch (err) {
-    // Ignore error
+    alert('Failed to check wishlist status');
   }
 };
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/BizChat/api/notifications")
+@RequestMapping("/BizChat/artDummies/notifications")
 @CrossOrigin(origins = "*")
 public class NotificationController {
 
