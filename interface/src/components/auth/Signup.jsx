@@ -69,11 +69,9 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      // Remove confirmPassword before sending to backend
       const { confirmPassword, ...signupData } = formData;
       await signup(signupData);
       
-      // Success - navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
       console.error('Signup error:', err);

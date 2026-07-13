@@ -6,7 +6,8 @@ signup:async(userData)=>{
         if(response){
             localStorage.setItem("token",response.data.token);
             localStorage.setItem("user",JSON.stringify(response.data));
-            console.alert("Signup successful:", response.data);
+            console.log("Signup successful:", response.data);
+            alert("Signup successful! You can now log in.");
             console.log(response.data.error); // Log the error message if it exists
         }
         return response.data;
