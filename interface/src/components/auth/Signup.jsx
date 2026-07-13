@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
+    userName:'',
     email: '',
     password: '',
     confirmPassword: '',
@@ -31,7 +32,7 @@ const Signup = () => {
 
   // Validate form
   const validateForm = () => {
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword || !formData.role || !formData.userName) {
       setError('Please fill in all required fields');
       return false;
     }
@@ -138,7 +139,7 @@ const Signup = () => {
                   placeholder="John Doe"
                 />
               </div>
-
+              
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -157,6 +158,23 @@ const Signup = () => {
                 />
               </div>
 
+              {/* User Name */}
+              <div>
+                <label htmlFor="userName" className="block text-sm font-medium text-gray-700 mb-2">
+                  User Name *
+                </label>
+                <input
+                  id="userName"
+                  name="userName"
+                  type="text"
+                  required
+                  value={formData.userName}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm transition disabled:bg-gray-100"
+                  placeholder="john_doe123"
+                />
+              </div>
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">

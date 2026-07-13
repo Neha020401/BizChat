@@ -29,6 +29,9 @@ public class User {
     @Data
     public static class Profile{
         private String name;
+
+        @Indexed(unique = true)
+        private String userName;
         private String avatar;
         private String bio;
         private String phone;

@@ -17,6 +17,7 @@ import WishlistPage from './pages/WishlistPage';
 import CheckoutPage from './pages/CheckoutPage';
 import SellerOrdersPage from './pages/SellerOrdersPage';
 import MyOrdersPage from './pages/MyOrdersPage';
+import EditProfilePage from './pages/EditProfilePage';
 
 function App() {
   return (
@@ -36,6 +37,15 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               }
+            />
+
+            <Route
+            path="/edit-profile"
+            element={
+              <ProtectedRoute>
+                <EditProfilePage />
+              </ProtectedRoute>
+            }
             />
             <Route
               path="/products"

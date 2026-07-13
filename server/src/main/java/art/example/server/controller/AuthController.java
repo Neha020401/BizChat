@@ -68,11 +68,13 @@ public class AuthController
     }
 
 
-    @GetMapping("/deleteUser")
-    public ResponseEntity<?> deleteUser(@Valid @RequestBody String user){
+
+    // User getting delete by Id
+    @DeleteMapping("/deleteUser/{id}")
+    public ResponseEntity<?> deleteUser(@Valid @PathVariable String userId){
     try{
-        String delete = userService.deleteUser(user);
-        return  ResponseEntity.ok("User is been deleted");
+        String delete = userService.deleteUser(userId);
+        return  ResponseEntity.ok("User "+ delete +" is been deleted");
     }catch (ResponseStatusException e) {
         Map<String, String> error = new HashMap<>();
         error.put("message", e.getReason());

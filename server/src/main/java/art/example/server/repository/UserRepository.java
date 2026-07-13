@@ -20,6 +20,13 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByRole(String role);
 
+//    String findByUserName(String userName);
+//    String existsByUserName(String userName);
+
+    Optional<User> findByProfileUserName(String userName);
+
+    boolean existsByProfileUserName(String userName);
+
     Optional<User> findByProfileNameAndRole(String name, String role);
 
 

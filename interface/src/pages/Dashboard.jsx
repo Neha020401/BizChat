@@ -1,17 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {useAuth} from '../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+     const navigate = useNavigate();
      const { user } = useAuth();
      
    return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+       
         <div className="bg-white rounded-lg shadow p-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Welcome back, {user?.name}!
+           <div className="flex items-center gap-6 mb-8">
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
+                <span className="text-gray-500">No Image</span>
+              </div>
+            )}
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Welcome {user?.name}!
           </h1>
+
+          <div>
+            <button 
+              onClick={()=> navigate('/edit-profile')}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+              Edit Profile
+            </button>
+          </div>
+          </div>
+
+          
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <div className="bg-blue-50 p-6 rounded-lg">

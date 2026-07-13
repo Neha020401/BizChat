@@ -6,6 +6,7 @@ import art.example.server.dto.SignupRequest;
 import art.example.server.model.User;
 import art.example.server.repository.UserRepository;
 import art.example.server.security.JwtTokenProvider;
+import com.mongodb.DuplicateKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +33,32 @@ public class AuthService {
     public AuthResponse signup(SignupRequest request) {
 
         if (userService.emailExists(request.getEmail())) {
-            throw new RuntimeException("Email is already registered");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Email is already registered"
+            );
+
+//            throw new RuntimeException("Email is already registered");
+
+        }
+
+        if(userService.existByUserName(request.getUserName())){
+            throw  new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "UserName already exists Please try another usrName"
+            );
+//            throw new RuntimeException("UserName already exists Please try another usrName");
         }
 
         if (!request.getRole().equals("BUYER") &&
                 !request.getRole().equals("SELLER") &&
                 !request.getRole().equals("BOTH")) {
-            throw new RuntimeException("Invalid Role, The role must be BUYER,SELLER, or BOTH");
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid Role, The role must be BUYER,SELLER, or BOTH(UNION)"
+            );
+//            throw new RuntimeException("Invalid Role, The role must be BUYER,SELLER, or BOTH");
         }
 
         try{
@@ -52,6 +72,7 @@ public class AuthService {
             profile.setName(request.getName());
             profile.setBio(request.getBio());
             profile.setPhone(request.getPhoneno());
+            profile.setUserName(request.getUserName());
 
             user.setProfile(profile);
 
@@ -61,14 +82,22 @@ public class AuthService {
             System.out.println("After save - Full User: " + savedUser);
 
             String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
-            System.out.println(request);
+            System.out.println(user);
             return new AuthResponse(
                     token,
                     savedUser.getId(),
                     savedUser.getEmail(),
                     savedUser.getProfile().getName(),
-                    savedUser.getRole());
-        }catch (Exception e ){
+                    savedUser.getRole(),
+                    savedUser.getProfile().getUserName()
+            );
+        }catch (DuplicateKeyException e){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Email or  UserName  already exists. "
+            );
+        }
+        catch (Exception e ){
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Signup failed. Please try again later."
@@ -81,7 +110,11 @@ public class AuthService {
         User user = userService.getUserByEmail(request.getEmail());
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid  password");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid  password"
+            );
+//            throw new RuntimeException("Invalid  password");
         }
 
         try{
@@ -93,9 +126,14 @@ public class AuthService {
                     user.getId(),
                     user.getEmail(),
                     user.getProfile().getName(),
-                    user.getRole());
+                    user.getRole(),
+                    user.getProfile().getUserName()
+            );
         }catch (Exception e){
-            throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Some problem with the login, can't login you in ");
+            throw  new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Some problem with the login, can't login you in "
+            );
         }
         }
 
