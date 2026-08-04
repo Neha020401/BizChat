@@ -70,7 +70,7 @@ const Navbar = () => {
                   to="/dashboard"
                   className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
                 >
-                  Dashboard
+                  Profile
                 </Link>
                 <Link
                   to="/products"

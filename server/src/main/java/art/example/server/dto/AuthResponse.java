@@ -13,6 +13,7 @@ public class AuthResponse {
     private String type = "Bearer";
     private  String id ;
     private String  email;
+    private String avatar ;
     private String name ;
     private boolean isActive;
     private String userName;

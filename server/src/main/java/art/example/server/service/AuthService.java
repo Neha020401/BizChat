@@ -38,8 +38,6 @@ public class AuthService {
                     "Email is already registered"
             );
 
-//            throw new RuntimeException("Email is already registered");
-
         }
 
         if(userService.existByUserName(request.getUserName())){
@@ -47,7 +45,6 @@ public class AuthService {
                     HttpStatus.BAD_REQUEST,
                     "UserName already exists Please try another usrName"
             );
-//            throw new RuntimeException("UserName already exists Please try another usrName");
         }
 
         if (!request.getRole().equals("BUYER") &&
@@ -58,7 +55,6 @@ public class AuthService {
                     HttpStatus.BAD_REQUEST,
                     "Invalid Role, The role must be BUYER,SELLER, or BOTH(UNION)"
             );
-//            throw new RuntimeException("Invalid Role, The role must be BUYER,SELLER, or BOTH");
         }
 
         try{

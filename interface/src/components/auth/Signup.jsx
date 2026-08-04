@@ -12,6 +12,7 @@ const Signup = () => {
     role: 'BUYER',
     phoneno: '',
     bio: '',
+    avatar: null,
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
