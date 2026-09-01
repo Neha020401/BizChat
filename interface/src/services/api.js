@@ -17,12 +17,12 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    console.log('API Request: ', {
-      method: config.method?.toUpperCase(),
-      url: config.url,
-      fillurl:`${API_BASE_URL}${config.url}`,
-      hasToken: !!token
-    })
+    // console.log('API Request: ', {
+    //   method: config.method?.toUpperCase(),
+    //   url: config.url,
+    //   fillurl:`${API_BASE_URL}${config.url}`,
+    //   hasToken: !!token
+    // })
 
     return config;
   },

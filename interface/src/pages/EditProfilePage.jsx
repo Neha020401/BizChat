@@ -7,7 +7,7 @@
 
   const [formData, setFormData] = useState({
   userName: user?.name || "",
-    avatar: user?.avatar || null,
+    avatar: user?.avatar || "",
     email: user?.email || "",
     phone: user?.phone || "",
     name: user?.name || "",
@@ -16,6 +16,7 @@
 });
 
 
+console.log(formData);
 const convertToBase64 = (file) => {
   return new Promise((resolve, reject) => {
   const reader = new FileReader();

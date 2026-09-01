@@ -10,9 +10,9 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     role: 'BUYER',
-    phoneno: '',
+    phone: '',
     bio: '',
-    avatar: null,
+    avatar: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -71,6 +71,8 @@ const Signup = () => {
 
     try {
       const { confirmPassword, ...signupData } = formData;
+      alert(signupData);
+      alert("you are signing in");
       await signup(signupData);
       
       navigate('/dashboard');
@@ -120,6 +122,12 @@ const Signup = () => {
 
           {/* Signup Form */}
           <form className="space-y-5" onSubmit={handleSubmit}>
+             <div className='avatar-container'>
+              <div>
+                Image placeholder
+              </div>
+              <input type='image'/>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Full Name */}
               <div>
@@ -238,9 +246,9 @@ const Signup = () => {
               </label>
               <input
                 id="phone"
-                name="phoneno"
+                name="phone"
                 type="tel"
-                value={formData.phoneno}
+                value={formData.phone}
                 onChange={handleChange}
                 disabled={loading}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 sm:text-sm transition disabled:bg-gray-100"

@@ -26,8 +26,8 @@ public class SignupRequest {
     @NotBlank(message = "UserId is mandatory please enter unique userName")
     private String userName ;
 
-   private String phoneno;
+   private String phone;
+   private String avatar;
    private String isActive;
    private String bio;
-
 }

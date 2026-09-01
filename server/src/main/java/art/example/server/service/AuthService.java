@@ -67,7 +67,8 @@ public class AuthService {
             User.Profile profile = new User.Profile();
             profile.setName(request.getName());
             profile.setBio(request.getBio());
-            profile.setPhone(request.getPhoneno());
+            profile.setAvatar(request.getAvatar());
+            profile.setPhone(request.getPhone());
             profile.setUserName(request.getUserName());
 
             user.setProfile(profile);
@@ -79,14 +80,17 @@ public class AuthService {
 
             String token = jwtTokenProvider.generateToken(savedUser.getId(), savedUser.getEmail());
             System.out.println(user);
-            return new AuthResponse(
-                    token,
-                    savedUser.getId(),
-                    savedUser.getEmail(),
-                    savedUser.getProfile().getName(),
-                    savedUser.getRole(),
-                    savedUser.getProfile().getUserName()
-            );
+           AuthResponse signUpInfo;
+            signUpInfo = new AuthResponse(
+                     token,
+                     savedUser.getId(),
+                     savedUser.getEmail(),
+                     savedUser.getProfile().getName(),
+                     savedUser.getRole(),
+                     savedUser.getProfile().getUserName()
+             );
+
+            return signUpInfo;
         }catch (DuplicateKeyException e){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -94,6 +98,7 @@ public class AuthService {
             );
         }
         catch (Exception e ){
+            System.out.println("Error SigningUp: " + e);
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Signup failed. Please try again later."
