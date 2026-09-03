@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 const Login =()=>{
     const [formData, setFormData] = useState({
@@ -132,7 +134,11 @@ const Login =()=>{
                   onClick={() => setShowPassword(!showPassword)}
                   className="text-sm text-blue-600 hover:text-blue-500"
                 >
-                  {showPassword ? 'Hide' : 'Show'}
+                {/*<i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>  */}
+                  {showPassword ? 
+                  'Hide' 
+                  : 'Show'
+                  }
                 </button>
               </div>
             </div>
